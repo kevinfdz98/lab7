@@ -8,8 +8,10 @@ const {v4 : uuidv4} = require('uuid');
 
 const app = express(); 
 const jsonParser = bodyParser.json(); 
+const tokenManager = require('./middleware/tokenManager'); 
 
 app.use(morgan('dev')); 
+app.use(tokenManager); 
 
 console.log('FInish initializing constants'); 
 
@@ -98,7 +100,7 @@ app.get('/bookmark/', (req, res)=>{
     if( !bookMarkResponse)
     {
         res.statusMessage = "Sorry, the bookmark you are looking for is not here"; 
-        return res.status(404).end()
+        return res.status(404).end();
     }
 
     return res.status(200).json(bookMarkResponse); 
@@ -106,6 +108,121 @@ app.get('/bookmark/', (req, res)=>{
 
 });
 
+app.post('/bookmark', jsonParser, (req, res) => {
+    console.log("body", req.body); 
+    let id = req.body.id;
+    let title = req.body.title; 
+    let desc = req.body.description; 
+    let url = req.body.url; 
+    let rate = req.body.rating; 
+
+    console.log(typeof(rate));
+
+    console.log(title, desc, url, rate); 
+
+    if(id)
+    {
+        res.statusMessage = "The 'id' parameter must not be included on the body";
+        return res.status(406).end(); 
+    }
+
+    if(!title || !desc || !url || !rate)
+    {
+        res.statusMessage = "All parameters (except 'Id') must be sent on the body request";
+        return res.status(406).end(); 
+    }
+    id = uuidv4();
+
+    let newBookmark = {id, title, desc, url, rate}; 
+    bookmarks.push(newBookmark); 
+    return res.status(201).json(newBookmark); 
+});  
+
+app.delete('/bookmark/:id', (req, res) =>{
+    let id = req.params.id; 
+    console.log(id); 
+
+
+    let itemToRemove = -1;
+    
+    itemToRemove = bookmarks.findIndex( ( mark ) => {
+        console.log("This is the id of the mark");
+        console.log(mark.id); 
+
+        if( mark.id === id ){
+            return true;
+        }
+    });
+
+        console.log("Im out of the findindex"); 
+        console.log(itemToRemove); 
+
+     if( itemToRemove < 0 ){
+            res.statusMessage = "That 'id' was not found in the bookmarks.";
+            return res.status( 404 ).end();
+        }
+    
+       bookmarks.splice( itemToRemove, 1 );
+        return res.status( 200 ).end();
+});
+
+app.patch('/bookmark/:id', jsonParser, (req, res)=>{
+    let paramId = req.params.id; 
+    let bodyId = req.body.id; 
+    let title = req.body.title; 
+    let description = req.body.description; 
+    let url = req.body.url; 
+    let rate = req.body.rating; 
+
+
+
+    console.log(req.body); 
+    if(!bodyId)
+    {
+        res.statusMessage = "You must send the 'id' parameter in the body as well ";
+        return res.status(406).end(); 
+    }
+
+    if(paramId != bodyId)
+    {
+        res.statusMessage = "The 'id' parameter sent on the url is different than the 'id' on the body";
+        return res.status(409).end(); 
+    }
+    
+ 
+
+    let itemToPatch = -1; 
+
+    itemToPatch = bookmarks.findIndex( (mark) => {
+        if( mark.id === paramId ){
+            return true;
+        }
+    }); 
+
+    if( itemToPatch < 0 ){
+        res.statusMessage = "That 'id' was not found in the bookmarks.";
+        return res.status( 404 ).end();
+    }
+
+    if(title)
+    {
+        bookmarks[itemToPatch].title = title;
+    }
+    if(description)
+    {
+        bookmarks[itemToPatch].description = description;
+    }
+    if(url)
+    {
+        bookmarks[itemToPatch].url = url;
+    }
+    if(rate)
+    {
+        bookmarks[itemToPatch].rating = rate;
+    }
+
+    return res.status(202).json(bookmarks[itemToPatch]); 
+});
 
 app.listen(8080, ()=>{
     console.log("Now Im listening i standalone mode port 8080");
