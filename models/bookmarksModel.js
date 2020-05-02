@@ -97,7 +97,7 @@ const bookmarksQueries = {
 
    /* patchElementById : function(idToPatch, objectsToUpdate){
         return bookmarksCollection
-        .update({'id' : idToPatch}, { $set : {objectsToUpdate}})
+        .update({id : idToPatch}, { $set : objectsToUpdate})
         .then( updated => {
                 return updated
         })
@@ -106,7 +106,7 @@ const bookmarksQueries = {
         })
     }*/
 
-    patchElementById : function(idToPatch, objectsToUpdate){
+    /*patchElementById : function(idToPatch, objectsToUpdate){
         return bookmarksCollection
         .update({'id' : idToPatch},{objectsToUpdate})
         .then( updated => {
@@ -115,7 +115,19 @@ const bookmarksQueries = {
         .catch(err => {
             return err; 
         })
-    }
+    }/*/
+
+    patchElementById : function(idToPatch, objectsToUpdate){
+    return bookmarksCollection
+    .findOneAndUpdate({ idToPatch }, objectsToUpdate, { new: true })
+    .then( updated => {
+            return updated
+    })
+    .catch(err => {
+        return err; 
+    })
+}
+
 }
 
 
