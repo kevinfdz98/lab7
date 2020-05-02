@@ -83,52 +83,26 @@ const bookmarksQueries = {
             return err; 
         })
     },
-
-   /* patchElementById : function(idToPatch, objectsToUpdate){
+    
+   patchElementById : function(idToPatch, objectsToUpdate){
         return bookmarksCollection
-        .findByIdAndUpdate({'id' : idToPatch}, { update : {objectsToUpdate}})
-        .then( updated => {
-                return updated
-        })
+        .update({"id": `"${idToPatch}"`},{$set : `{${objectsToUpdate}}`},{new : true})
+        .then( patched => {
+            return patched
+                            })
         .catch(err => {
-            return err; 
-        })
-    }*/
+                 return err; 
+                     })
+                    }
 
-   /* patchElementById : function(idToPatch, objectsToUpdate){
-        return bookmarksCollection
-        .update({id : idToPatch}, { $set : objectsToUpdate})
-        .then( updated => {
-                return updated
-        })
-        .catch(err => {
-            return err; 
-        })
-    }*/
+                    
 
-    /*patchElementById : function(idToPatch, objectsToUpdate){
-        return bookmarksCollection
-        .update({'id' : idToPatch},{objectsToUpdate})
-        .then( updated => {
-                return updated
-        })
-        .catch(err => {
-            return err; 
-        })
-    }/*/
 
-    patchElementById : function(idToPatch, objectsToUpdate){
-    return bookmarksCollection
-    .findOneAndUpdate({ idToPatch }, objectsToUpdate, { new: true })
-    .then( updated => {
-            return updated
-    })
-    .catch(err => {
-        return err; 
-    })
+                       // .update({"id": `"${idToPatch}"`},{$set : `{${objectsToUpdate}}`},{new : true})
+                       //.findOneAndUpdate({"id": `"${idToPatch}"`},{$set:objectsToUpdate}, {new : true})
 }
 
-}
+
 
 
 module.exports = { bookmarksQueries }; 

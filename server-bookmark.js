@@ -18,61 +18,6 @@ app.use(tokenManager);
 
 console.log('FInish initializing constants'); 
 
-//import {v4 as uuidv4} from uuid; 
-
-/*let test = uuidv4(); 
-console.log(test); */
-
-
-/*const buffer = new Array();
-uuidv4(null, buffer, 0);
-*/
-
-/*const post = {
-    id : uuidv4(), 
-    title : String, 
-    description : String, 
-    url : String,
-    rating : Number
-};*/
-
-
-
-
-let bookmarks = [
-    {
-        id : uuidv4(),
-        title : "Correo Electrónico",
-        description : "Bandeja de entrada de outlook", 
-        url : 'https://outlook.office.com/mail/inbox',
-        rating : 8
-    }, 
-    {
-        id : uuidv4(),
-        title : "Youtube",
-        description : "Inicio del buscador de videos", 
-        url : 'https://www.youtube.com/?hl=es-419&gl=MX',
-        rating : 10
-    }, 
-    {
-        id : uuidv4(),
-        title : "Youtube",
-        description : "Sitio web de la clase de desarrollo web", 
-        url : 'https://sites.google.com/site/wadfeb2/',
-        rating : 9
-    }, 
-    {
-        id : uuidv4(),
-        title : "Blackboard",
-        description : "Pagina de inicio de la plataforma escolar", 
-        url : 'https://miscursos.tec.mx/ultra',
-        rating : 7
-    }
-]
-
-console.log(bookmarks); 
-
-
 
 app.get('/bookmarks', (req, res)=>{
     bookmarksQueries
@@ -213,69 +158,8 @@ app.delete('/bookmark/:id', (req, res) =>{
        bookmarks.splice( itemToRemove, 1 );*/
 });
 
+
 app.patch('/bookmark/:id', jsonParser, (req, res)=>{
-    let paramId = req.params.id; 
-    let bodyId = req.body.id; 
-    let title = req.body.title; 
-    let description = req.body.description; 
-    let url = req.body.url; 
-    let rate = req.body.rating; 
-
-
-
-    console.log(req.body); 
-    if(!bodyId)
-    {
-        res.statusMessage = "You must send the 'id' parameter in the body as well ";
-        return res.status(406).end(); 
-    }
-
-    if(paramId != bodyId)
-    {
-        res.statusMessage = "The 'id' parameter sent on the url is different than the 'id' on the body";
-        return res.status(409).end(); 
-    }
-
-
-
-    let itemToPatch = -1; 
-
-    itemToPatch = bookmarks.findIndex( (mark) => {
-        if( mark.id === paramId ){
-            return true;
-        }
-    }); 
-
-    if( itemToPatch < 0 ){
-        res.statusMessage = "That 'id' was not found in the bookmarks.";
-        return res.status( 404 ).end();
-    }
-
-    if(title)
-    {
-        bookmarks[itemToPatch].title = title;
-    }
-    if(description)
-    {
-        bookmarks[itemToPatch].description = description;
-    }
-    if(url)
-    {
-        bookmarks[itemToPatch].url = url;
-    }
-    if(rate)
-    {
-        bookmarks[itemToPatch].rating = rate;
-    }
-
-    return res.status(202).json(bookmarks[itemToPatch]); 
-});
-
-
-
-
-
-/*app.patch('/bookmark/:id', jsonParser, (req, res)=>{
     let paramId = req.params.id; 
     let bodyId = req.body.id; 
     let title = req.body.title; 
@@ -299,21 +183,7 @@ app.patch('/bookmark/:id', jsonParser, (req, res)=>{
     }
     
     console.log("I evaluated the id's"); 
- 
-/*
-    let itemToPatch = -1; 
 
-    itemToPatch = bookmarks.findIndex( (mark) => {
-        if( mark.id === paramId ){
-            return true;
-        }
-    }); 
-
-    if( itemToPatch < 0 ){
-        res.statusMessage = "That 'id' was not found in the bookmarks.";
-        return res.status( 404 ).end();
-    }
-*/
 
     /*let objectToPatch =  bookmarksQueries
                                          .getBookmarkById(paramId)
@@ -326,7 +196,8 @@ app.patch('/bookmark/:id', jsonParser, (req, res)=>{
                                         }); 
     console.log("Aqui presento el objeto que quiero modificar "); 
     console.log(objectToPatch); */
-/*
+
+
 let changes = "";
 
 console.log("This is the empty string"); 
@@ -335,22 +206,22 @@ console.log(changes);
     if(title)
     {
         if(changes.length > 1 ) {changes = changes.concat(',')}
-        changes = changes.concat(`title : '${title}'`)
+        changes = changes.concat(`"title" : "${title}"`)
     }
     if(description)
     {
         if(changes.length > 1 ) {changes = changes.concat(',')}
-        changes = changes.concat(`'description' : '${description}'`)
+        changes = changes.concat(`"description" : "${description}"`)
     }
     if(url)
     {
         if(changes.length > 1 ) { changes = changes.concat(',')}
-        changes = changes.concat(`'url' : '${url}'`)
+        changes = changes.concat(`"url" : "${url}"`)
     }
     if(rating)
     {
         if(changes.length > 1 ) {changes = changes.concat(',')}
-        changes = changes.concat(`'rating' : '${rating}'`)
+        changes = changes.concat(`"rating" : "${rating}"`)
     }
     console.log("Finished evalauting body of request"); 
     console.log(changes); 
@@ -359,13 +230,14 @@ console.log(changes);
     bookmarksQueries
                     .patchElementById(paramId, changes)
                     .then( updated => {
+                        console.log(updated); 
                         return res.status(202).json(updated);
                     })
                     .catch( err => {
                         res.status = err; 
                         return res.status(500).end(); 
                     })
-});*/
+});
 
 app.listen(8080, ()=>{
     console.log("Now Im listening i standalone mode port 8080");
