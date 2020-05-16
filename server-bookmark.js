@@ -12,7 +12,11 @@ const {v4 : uuidv4} = require('uuid');
 const app = express(); 
 const jsonParser = bodyParser.json(); 
 const tokenManager = require('./middleware/tokenManager'); 
-app.use(express.static('public')); 
+const { DATABASE_URL, PORT } = require("./config");
+const cors = require( './middleware/cors' );
+
+app.use( cors );
+app.use(express.static("public"));
 app.use(morgan('dev')); 
 app.use(tokenManager); 
 
