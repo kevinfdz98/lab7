@@ -84,22 +84,16 @@ const bookmarksQueries = {
         })
     },
     
-   patchElementById : function(idToPatch, objectsToUpdate){
-        return bookmarksCollection
-        .update({"id": `"${idToPatch}"`},{$set : `{${objectsToUpdate}}`},{new : true})
-        .then( patched => {
-            return patched
-                            })
-        .catch(err => {
-                 return err; 
-                     })
-                    }
-
-                    
-
-
-                       // .update({"id": `"${idToPatch}"`},{$set : `{${objectsToUpdate}}`},{new : true})
-                       //.findOneAndUpdate({"id": `"${idToPatch}"`},{$set:objectsToUpdate}, {new : true})
+   patchElementById : function (id, params) {
+    return bookmarksCollection
+      .findOneAndUpdate({ id }, params, { new: true })
+      .then((updatedBookmark) => {
+        return updatedBookmark;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
 }
 
 

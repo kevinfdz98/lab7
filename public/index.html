@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Bookmarks APP</title>
+    <link href="./styles.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <h1> Welcome to the bookmarks app </h1>
+
+    <h3>a) List all the bookmarks when the page loads</h3>
+        <div class="listBookmarks">
+        </div>
+    <h3>b) Have a form to POST a new bookmark and update the list on the success.</h3>
+    <form> 
+        <label for="title">Tittle of the bookmark</label>
+        <input type="text" id="title"> 
+
+        <label for="description">Description of Bookmark</label>
+        <input type="text" id="description"> 
+
+        <label for="url">URL of the bookmark</label>
+        <input type="text" id="url"> 
+
+        <label for="rating">Rating of the bookmark</label>
+        <input type="number" id="rating">
+
+        <button type="submit" class="newBookmark"> Submit</button> 
+    </form>
+
+    <h3>c) Have a form to DELETE a bookmark and update the list on the success. </h3>
+    <form> 
+        <label for="idDelete">Write the id of the Bookmark to delete</label>
+        <input type="text" id="idDelete"> 
+        <button type="submit" class="deleteBookmark"> Submit</button> 
+
+    </form>
+    <h3>d) Have a form for UPDATING a bookmark and modify the list on the success. </h3>
+    <form> 
+      <label for="idPatch">Bookmark to modify</label>
+      <input type="text" id="idPatch"> 
+
+        <label for="titleU">Tittle to modify</label>
+        <input type="text" id="titleU"> 
+
+        <label for="descriptionU">Description to modify</label>
+        <input type="text" id="descriptionU"> 
+
+        <label for="urlU">URL to modify</label>
+        <input type="text" id="urlU"> 
+
+        <label for="ratingU">rating to modify</label>
+        <input type="number" id="ratingU">
+
+        <button type="submit" class="patchBookmark"> Submit </button> 
+    </form>
+    <h3>e) Have a form to GET bookmarks by title and display the results. </h3>
+    <form> 
+        <label for="titleSearch">Wich title are you looking for?</label>
+        <input type="text" id="titleSearch"> 
+        <button type="submit" class="searchBookmarks"> Submit</button> 
+
+    </form>
+
+    <div class="listBookmarksTitle">
+
+    </div> 
+
+    <script src="./script.js"></script>
+  </body>
+</html>
